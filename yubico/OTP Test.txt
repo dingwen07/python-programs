@@ -1,0 +1,7 @@
+Congratulations! Please find below your client identity and client API key.
+
+Client ID:	42160
+Secret key:	QdFqJ0hpRN3EFddDOfThTAL/4Hs=
+Be sure to protect the secret. If you need to generate more client id/keys for your different applications, please come back.
+
+Note that it may take up until 5 minutes until all validation servers know about your newly generated client.
