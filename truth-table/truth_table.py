@@ -22,19 +22,28 @@ EXPRESSION = lambda p, q, r: AND_GATE(OR_GATE(p, q), OR_GATE(r, NOT_GATE(p))) # 
 # EXPRESSION = lambda p, q, r: AND_GATE(q, r)  # 1.2.3
 # EXPRESSION = lambda p, q, r: IMPLY_GATE(OR_GATE(p, NOT_GATE(p)), AND_GATE(q, r))  # 1.2.4
 
-product_list = list(itertools.product((False, True), repeat=len(ELEMENT_LIST)))
-permutation_list = []
-for truth_list in product_list:
-    i_list = []
-    for i in range(0, len(ELEMENT_LIST)):
-        i_list.append((ELEMENT_LIST[i], truth_list[i]))
-    permutation_list.append(i_list)
-# print(permutation_list)
 
 for element in ELEMENT_LIST:
     print(element, end='\t')
 print('RESULT')
 
+product_list = list(itertools.product((False, True), repeat=len(ELEMENT_LIST)))
+# permutation_list = []
+for truth_list in product_list:
+    '''
+    i_list = []
+    for i in range(0, len(ELEMENT_LIST)):
+        i_list.append((ELEMENT_LIST[i], truth_list[i]))
+    '''
+    for i in truth_list:
+        print_str = 'T' if i else 'F'
+        print(print_str, end='\t')
+    print_str = 'T' if EXPRESSION(*truth_list) else 'F'
+    print(print_str)
+    # permutation_list.append(i_list)
+# print(permutation_list)
+
+'''
 for i in permutation_list:
     truth_list = []
     for element in ELEMENT_LIST:
@@ -45,3 +54,4 @@ for i in permutation_list:
                 print(print_str, end='\t')
     print_str = 'T' if EXPRESSION(*truth_list) else 'F'
     print(print_str)
+'''
