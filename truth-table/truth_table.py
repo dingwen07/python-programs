@@ -1,57 +1,62 @@
 import itertools
-from logical_gates import *
+from typing import Callable, Iterable, NoReturn
 
-# TEST
-# ELEMENT_LIST = ['p', 'q']
-# EXPRESSION = lambda p, q: NOT_GATE(p)
-# EXPRESSION = lambda p, q: AND_GATE(p, q)
-# EXPRESSION = lambda p, q: OR_GATE(p, q)
-# EXPRESSION = lambda p, q: XOR_GATE(p, q)
-# EXPRESSION = lambda p, q: IMPLY_GATE(p, q)
-# EXPRESSION = lambda p, q: NOR_GATE(p, q)
-# EXPRESSION = lambda p, q: XNOR_GATE(p, q)
-# EXPRESSION = lambda p, q: NAND_GATE(p, q)
+def truth_table(prop_symbols: Iterable[str], expressions: Iterable[Callable[..., bool]]) -> int:
+    err = 0
+    for symbol in prop_symbols:
+        print(symbol, end='\t')
+    for i in range(1, len(expressions) + 1):
+        print('RES{}'.format(str(i)), end='\t')
+    print()
 
-ELEMENT_LIST = ['p', 'q', 'r']
-# EXPRESSION = lambda p, q, r: OR_GATE(p, q) # 1.1.1
-# EXPRESSION = lambda p, q, r: NOT_GATE(p) # 1.1.2
-# EXPRESSION = lambda p, q, r: OR_GATE(r, NOT_GATE(p)) # 1.1.3
-EXPRESSION = lambda p, q, r: AND_GATE(OR_GATE(p, q), OR_GATE(r, NOT_GATE(p))) # 1.1.4
-# EXPRESSION = lambda p, q, r: NOT_GATE(p) # 1.2.1
-# EXPRESSION = lambda p, q, r: OR_GATE(p, NOT_GATE(p))  # 1.2.2
-# EXPRESSION = lambda p, q, r: AND_GATE(q, r)  # 1.2.3
-# EXPRESSION = lambda p, q, r: IMPLY_GATE(OR_GATE(p, NOT_GATE(p)), AND_GATE(q, r))  # 1.2.4
+    product_list = list(itertools.product((False, True), repeat=len(prop_symbols)))
+    product_list.sort(reverse=False)
+    for truth_list in product_list:
+        for i in truth_list:
+            print_str = 'T' if i else 'F'
+            print(print_str, end='\t')
+        for expression in expressions:
+            try:
+                print_str = 'T' if expression(*truth_list) else 'F'
+            except TypeError:
+                print_str = 'E'
+                err = 1
+            except Exception:
+                print_str = 'E'
+                err = 2
+            print(print_str, end='\t')
+        print()
+    return err
 
+if __name__ == '__main__':
+    from logical_gates import *
 
-for element in ELEMENT_LIST:
-    print(element, end='\t')
-print('RESULT')
+    # TEST
+    prop_symbols_t = ('p', 'q')
+    EXPRESSION1 = lambda p, q: NOT_GATE(p) # MUST take len(prop_symbols) parameter(s)
+    EXPRESSION2 = lambda p, q: AND_GATE(p, q)
+    EXPRESSION3 = lambda p, q: OR_GATE(p, q)
+    EXPRESSION4 = lambda p, q: XOR_GATE(p, q)
+    EXPRESSION5 = lambda p, q: IMPLY_GATE(p, q)
+    EXPRESSION6 = lambda p, q: NOR_GATE(p, q)
+    EXPRESSION7 = lambda p, q: XNOR_GATE(p, q)
+    EXPRESSION8 = lambda p, q: NAND_GATE(p, q)
+    expressions = (EXPRESSION1, EXPRESSION2, EXPRESSION3, EXPRESSION4, EXPRESSION5, EXPRESSION6, EXPRESSION7, EXPRESSION8)
+    print(truth_table(prop_symbols_t, expressions))
 
-product_list = list(itertools.product((False, True), repeat=len(ELEMENT_LIST)))
-# permutation_list = []
-for truth_list in product_list:
-    '''
-    i_list = []
-    for i in range(0, len(ELEMENT_LIST)):
-        i_list.append((ELEMENT_LIST[i], truth_list[i]))
-    '''
-    for i in truth_list:
-        print_str = 'T' if i else 'F'
-        print(print_str, end='\t')
-    print_str = 'T' if EXPRESSION(*truth_list) else 'F'
-    print(print_str)
-    # permutation_list.append(i_list)
-# print(permutation_list)
+    prop_symbols_ab = ('p', 'q', 'r')
+    EXPRESSION_a1 = lambda p, q, r: OR_GATE(p, q) # 1.a.1
+    EXPRESSION_a2 = lambda p, q, r: NOT_GATE(p) # 1.a.2
+    EXPRESSION_a3 = lambda p, q, r: OR_GATE(r, NOT_GATE(p)) # 1.a.3
+    EXPRESSION_a4 = lambda p, q, r: AND_GATE(OR_GATE(p, q), OR_GATE(r, NOT_GATE(p))) # 1.a.4
+    expressions_a = (EXPRESSION_a1, EXPRESSION_a2, EXPRESSION_a3, EXPRESSION_a4)
+    EXPRESSION_b1 = lambda p, q, r: NOT_GATE(p) # 1.b.1
+    EXPRESSION_b2 = lambda p, q, r: OR_GATE(p, NOT_GATE(p))  # 1.b.2
+    EXPRESSION_b3 = lambda p, q, r: AND_GATE(q, r)  # 1.b.3
+    EXPRESSION_b4 = lambda p, q, r: IMPLY_GATE(OR_GATE(p, NOT_GATE(p)), AND_GATE(q, r))  # 1.b.4
+    expressions_b = (EXPRESSION_b1, EXPRESSION_b2, EXPRESSION_b3, EXPRESSION_b4)
 
-'''
-for i in permutation_list:
-    truth_list = []
-    for element in ELEMENT_LIST:
-        for e in i:
-            if e[0] == element:
-                truth_list.append(e[1])
-                print_str = 'T' if e[1] else 'F'
-                print(print_str, end='\t')
-    print_str = 'T' if EXPRESSION(*truth_list) else 'F'
-    print(print_str)
-'''
+    truth_table(prop_symbols_ab, expressions_a)
+    print()
+    truth_table(prop_symbols_ab, expressions_b)
+
