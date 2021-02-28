@@ -11,13 +11,19 @@ def truth_table(prop_symbols: Iterable[str], expressions: Iterable[Callable[...,
 
     product_list = list(itertools.product((False, True), repeat=len(prop_symbols)))
     product_list.sort(reverse=False)
+    truth_count = [0] * len(expressions)
     for truth_list in product_list:
         for i in truth_list:
             print_str = 'T' if i else 'F'
             print(print_str, end='\t')
-        for expression in expressions:
+        for j in range(0, len(expressions)):
+            expression = expressions[j]
             try:
-                print_str = 'T' if expression(*truth_list) else 'F'
+                if expression(*truth_list):
+                    print_str = 'T'
+                    truth_count[j] = truth_count[j] + 1
+                else:
+                    print_str = 'F'
             except TypeError:
                 print_str = 'E'
                 err = 1
@@ -26,6 +32,11 @@ def truth_table(prop_symbols: Iterable[str], expressions: Iterable[Callable[...,
                 err = 2
             print(print_str, end='\t')
         print()
+    for symbol in prop_symbols:
+        print('X', end='\t')
+    for i in truth_count:
+        print(str(i), end='\t')
+    print()
     return err
 
 if __name__ == '__main__':
