@@ -6,7 +6,7 @@ def truth_table(prop_symbols: Iterable[str], expressions: Iterable[Callable[...,
     for symbol in prop_symbols:
         print(symbol, end='\t')
     for i in range(1, len(expressions) + 1):
-        print('RES{}'.format(str(i)), end='\t')
+        print('EXP{}'.format(str(i)), end='\t')
     print()
 
     product_list = list(itertools.product((False, True), repeat=len(prop_symbols)))
