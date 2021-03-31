@@ -4,9 +4,13 @@ import time
 import platform
 import os
 
-current_milli_time = lambda: int(round(time.time() * 1000))
+
+def current_milli_time(): return int(round(time.time() * 1000))
+
+
 DATABASE_FILE = 'cliplog.db'
 node = platform.node()
+
 
 def init_db(database_file='cliplog.db'):
     db = sqlite3.connect(database_file)
@@ -18,7 +22,6 @@ def init_db(database_file='cliplog.db'):
 	                    "text"	TEXT,
 	                    PRIMARY KEY("id" AUTOINCREMENT)
                     );''')
-    
 
 
 if __name__ == "__main__":
@@ -33,10 +36,12 @@ if __name__ == "__main__":
             new_clip = pyperclip.paste()
         except Exception as e:
             continue
-        if new_clip != old_clip:
+        if new_clip != old_clip and (not new_clip.isspace()):
             if new_clip.lower() == 'stop clipboard logger':
+                pyperclip.copy('CLIPBOARD LOGGING STOPPED')
                 exit()
             ctime = current_milli_time()
-            db_cursor.execute('''INSERT INTO "main"."clipboard_log"("time","node","text") VALUES (?,?,?);''', (ctime, node, new_clip.replace(os.linesep, '\n'),))
+            db_cursor.execute('''INSERT INTO "main"."clipboard_log"("time","node","text") VALUES (?,?,?);''',
+                              (ctime, node, new_clip.replace(os.linesep, '\n'),))
             db.commit()
         old_clip = new_clip
