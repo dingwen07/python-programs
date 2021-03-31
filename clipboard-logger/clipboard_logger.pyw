@@ -36,7 +36,7 @@ if __name__ == "__main__":
             new_clip = pyperclip.paste()
         except Exception as e:
             continue
-        if new_clip != old_clip and (not new_clip.isspace()):
+        if new_clip != old_clip and (not (new_clip.isspace() or new_clip.strip(' ') == '')):
             if new_clip.lower() == 'stop clipboard logger':
                 pyperclip.copy('CLIPBOARD LOGGING STOPPED')
                 exit()
