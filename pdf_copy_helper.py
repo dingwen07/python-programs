@@ -22,4 +22,5 @@ if __name__ == "__main__":
                 pyperclip.copy(text.replace('\n', os.linesep))
                 old_clip = pyperclip.paste()
         except Exception:
+            time.sleep(16)
             continue
