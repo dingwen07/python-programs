@@ -5,7 +5,7 @@ from math import sqrt
 import time
 
 
-def findPrime(n):
+def find_prime(n):
     result = list()
     result.append(2)
     result.append(3)
@@ -21,5 +21,5 @@ def findPrime(n):
 
 
 #start=time.clock()
-print(findPrime(1000000))
+print(find_prime(1000000))
 #print(time.clock()-start)

@@ -1,12 +1,12 @@
 #Python 3
 #Verify if a number is a prime number
 
-#from isPrime.py import isPrime
+#from is_prime.py import is_prime
 from itertools import count
 import math
 
 
-def isPrime(n):
+def is_prime(n):
     if n > 1:
         if n == 2:
             return True
@@ -20,7 +20,7 @@ def isPrime(n):
 
 
 """
-def isPrime(n):
+def is_prime(n):
     if n <= 1:
         return False
     i = 2
@@ -31,7 +31,7 @@ def isPrime(n):
     return True
 """
 """
-def isPrime(n):
+def is_prime(n):
     if n < 2:  return []
     if n == 2: return [2]
     s = range(3, n, 2)
@@ -52,4 +52,4 @@ def isPrime(n):
 """
 
 if __name__ == "__main__":
-    print(isPrime(input('Input a number')))
+    print(is_prime(input('Input a number')))

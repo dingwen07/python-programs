@@ -7,5 +7,5 @@ def fun(n):
         return int(n / 5 + fun(n / 5))
 
 
-n = int(input("Input n:"))
-print(n, "! 后0的数目为:", fun(n))
+n = int(input("Input n: "))
+print(n, 'There are {} zero(s) after {}!'.format(fun(n), n))
