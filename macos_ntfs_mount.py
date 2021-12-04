@@ -4,8 +4,8 @@ import os, re
 
 
 def umount_volume(device, mount_point='', force=False):
-    force_flag = 'force ' if force else ''
-    exit_code = os.system('diskutil {}umount '.format(force_flag) + device.replace(' ', '\\ '))
+    force_flag = 'force' if force else ''
+    exit_code = os.system('diskutil umount {} '.format(force_flag) + device.replace(' ', '\\ '))
     if exit_code != 0:
         print('Error unmounting ' + device + ' at ' + mount_point)
     return exit_code
@@ -72,7 +72,8 @@ print('Unmounting volumes...')
 for disk, mount_point in target_volumes:
     if umount_volume(disk, mount_point) != 0:
         if ask_user('Unmount failed, try to force unmount?', 'n'):
-            umount_volume(disk, mount_point, True)
+            if umount_volume(disk, mount_point, True) != 0:
+                input('Force unmount failed. Press Enter to continue...')
 
 print('Mounting volumes...')
 for disk, mount_point in target_volumes:
