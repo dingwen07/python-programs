@@ -5,7 +5,13 @@ from threading import Thread
 
 # Function to check if the loopback address is set
 def check_and_set_loopback(loopback="127.0.0.10"):
-    loopback_ips = subprocess.check_output(["ifconfig", "lo0"]).decode("utf-8")
+    loopback_ips = []
+    while loopback not in loopback_ips:
+        print(f'Checking if {loopback} is added to loopback interface...')
+        loopback_ips = subprocess.check_output(["ifconfig", "lo0"]).decode("utf-8")
+        time.sleep(15)
+    print(f"{loopback} is ready.")
+    '''
     if loopback not in loopback_ips:
         print(f"{loopback} is not added to loopback interface, adding...")
         script = f"""
@@ -16,6 +22,8 @@ def check_and_set_loopback(loopback="127.0.0.10"):
         subprocess.run(["osascript", "-e", script], check=True)
     else:
         print(f"{loopback} is already configured.")
+    '''
+
 
 # Function to count files in the directory
 def count_files(directory):
